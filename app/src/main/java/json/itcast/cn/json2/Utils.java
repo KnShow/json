@@ -3,9 +3,13 @@ package json.itcast.cn.json2;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import json.itcast.cn.json2.serializer.FieldSerializer;
 
 /**
  * 序列化工具类
@@ -44,7 +48,7 @@ public class Utils {
      * @param fieldCacheMap
      * @param clazz
      */
-    public static void computGetter(Map<String, Field> fieldCacheMap, Class clazz) {
+    public static List<FieldSerializer> computGetter(Map<String, Field> fieldCacheMap, Class clazz) {
         Map fieldInfoMap = new LinkedHashMap<String, FieldInfo>();
         //1、先获取所有公有函数，再获取所有共有属性
         Method[] methods = clazz.getMethods();
@@ -96,5 +100,13 @@ public class Utils {
                 fieldInfoMap.put(properTyName, fieldInfo);
             }
         }
+
+        //将filedInfo加入到list集合中
+        List<FieldSerializer> fieldSerializers = new ArrayList<>();
+        for (FieldInfo fieldInfo : fieldInfoMap.values()) {
+            FieldSerializer fieldSerializer = new FieldSerializer(fieldInfo);
+            fieldSerializers.add(fieldSerializer);
+        }
+        return fieldSerializers;
     }
 }
