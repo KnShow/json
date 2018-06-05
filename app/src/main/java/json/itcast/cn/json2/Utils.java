@@ -49,7 +49,7 @@ public class Utils {
      * @param clazz
      */
     public static List<FieldSerializer> computGetter(Map<String, Field> fieldCacheMap, Class clazz) {
-        Map fieldInfoMap = new LinkedHashMap<String, FieldInfo>();
+        Map<String,FieldInfo> fieldInfoMap = new LinkedHashMap();
         //1、先获取所有公有函数，再获取所有共有属性
         Method[] methods = clazz.getMethods();
         for (Method method :

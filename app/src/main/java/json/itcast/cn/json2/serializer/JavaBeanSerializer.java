@@ -2,6 +2,7 @@ package json.itcast.cn.json2.serializer;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import json.itcast.cn.json2.JsonConfig;
@@ -13,6 +14,7 @@ import json.itcast.cn.json2.Utils;
 public class JavaBeanSerializer implements ObjectSerializer {
 
     private final Class beanType;
+    private final List<FieldSerializer> fieldSerializers;
 
     public JavaBeanSerializer(Class clazz) {
         beanType = clazz;
@@ -20,12 +22,11 @@ public class JavaBeanSerializer implements ObjectSerializer {
         Map<String, Field> cacheFieldMap = new HashMap<>();
         Map<String, Field> fieldMap = Utils.parseAllFiledToCache(cacheFieldMap, clazz);
         //序列化，采集公有getter函数及公有属性
-        Utils.computGetter(fieldMap,clazz);
+        fieldSerializers = Utils.computGetter(fieldMap, clazz);
     }
 
     @Override
     public void serializer(JsonConfig jsonConfig, String json, Object object) {
-
 
     }
 }
